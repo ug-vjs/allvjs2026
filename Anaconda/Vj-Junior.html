@@ -766,19 +766,54 @@ function renderMovieLabelPosts(json) {
 </style>
 
 
-
-
-
-<!-- ===================== STICKY MOBILE AD ===================== -->
-<div class="sticky-ad">
-<ins class="adsbygoogle"
-     style="display:block"
-     data-ad-client="ca-pub-2269884583846743"
-     data-ad-slot="8811425590"
-     data-ad-format="auto"
-     data-full-width-responsive="true"></ins>
-<script>(adsbygoogle=window.adsbygoogle||[]).push({});</script>
+<!-- ===================== STICKY ROTATING MOBILE ADSENSE SLOT ===================== -->
+<div class="sticky-ad" id="stickyRotatingAd">
+  <ins id="stickyAdSlot"
+       class="adsbygoogle"
+       style="display:block; width:100%;"
+       data-ad-client="ca-pub-2269884583846743"
+       data-ad-slot="8811425590"
+       data-ad-format="auto"
+       data-full-width-responsive="true"></ins>
 </div>
+
+<script>
+  // Mobile-only rotating slots
+  const stickyAdSlots = [
+    "8811425590", // original sticky slot
+    "2359999321", // 300x250
+    "4256856469", // responsive
+    "2906167922"  // banner
+  ];
+
+  let stickyIndex = 0;
+  const stickyIns = document.getElementById("stickyAdSlot");
+
+  function rotateStickyAd() {
+    // Safety: mobile only
+    if (window.innerWidth >= 768) return;
+
+    stickyIns.style.opacity = "0";
+
+    setTimeout(() => {
+      stickyIns.setAttribute("data-ad-slot", stickyAdSlots[stickyIndex]);
+      stickyIns.innerHTML = "";
+
+      (adsbygoogle = window.adsbygoogle || []).push({});
+
+      stickyIns.style.transition = "opacity 0.8s";
+      stickyIns.style.opacity = "1";
+
+      stickyIndex = (stickyIndex + 1) % stickyAdSlots.length;
+    }, 400);
+  }
+
+  document.addEventListener("DOMContentLoaded", () => {
+    rotateStickyAd();                 // first load
+    setInterval(rotateStickyAd, 180000); // rotate every 3 minutes (SAFE)
+  });
+</script>
+
 
 <script>
 document.addEventListener("DOMContentLoaded", function(){
