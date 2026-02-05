@@ -426,9 +426,15 @@ body.light-mode .movie-title { background: #007700; color: #fff; }
 <!-- ===================== VIDEO ===================== -->
 <div class="video-wrap">
 
-<!-- AdSense base script (load once per page) -->  
-<script async crossorigin="anonymous"
-  src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2269884583846743">
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2269884583846743"
+     crossorigin="anonymous"></script>
+<!-- 728 by 90 new -->
+<ins class="adsbygoogle"
+     style="display:inline-block;width:728px;height:90px"
+     data-ad-client="ca-pub-2269884583846743"
+     data-ad-slot="3580304316"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
 </script>
 
 <div class="video-container">
@@ -438,15 +444,7 @@ body.light-mode .movie-title { background: #007700; color: #fff; }
     src="https://www.dropbox.com/scl/fi/p7yro4rebs9758gnzl8i5/ANACONDA-JR.mp4?rlkey=c1dgog7a6aerf9uawmu9bxa3n&st=jciywmlq&raw=1">
   </iframe>
 
-  <!-- TOP IN-VIDEO AD (768x90) -->
-  <div class="ad-top-overlay" id="adTopOverlay">
-    <div class="ad-label">AD</div>
-    <ins class="adsbygoogle"
-         style="display:inline-block;width:768px;height:90px"
-         data-ad-client="ca-pub-2269884583846743"
-         data-ad-slot="5742141919"></ins>
-  </div>
-
+  
 </div>
 
 <style>
@@ -463,48 +461,10 @@ body.light-mode .movie-title { background: #007700; color: #fff; }
 /* Video iframe */
 iframe { 
   width:100%; 
-  height:600px; 
+  height:450px; 
   border:none; 
   border-radius:12px; 
   display:block;
-}
-
-/* TOP IN-VIDEO AD */
-.ad-top-overlay { 
-  position:absolute; 
-  top:10px; 
-  left:50%; 
-  transform:translateX(-50%); 
-  width:100%; 
-  max-width:768px; 
-  background:rgba(0,0,0,0.4); 
-  padding:5px; 
-  border-radius:10px; 
-  z-index:30; 
-  text-align:center; 
-}
-
-.ad-top-overlay ins.adsbygoogle { 
-  display:block !important; 
-  margin:0 auto; 
-  width:100% !important; 
-  max-width:768px !important; 
-  height:60px !important; 
-}
-
-/* AD Label */
-.ad-label { 
-  position:absolute; 
-  top:-18px; 
-  left:50%; 
-  transform:translateX(-50%); 
-  background:#000; 
-  color:#fff; 
-  font-size:12px; 
-  font-weight:bold; 
-  padding:2px 8px; 
-  border-radius:4px; 
-  letter-spacing:1px; 
 }
 
 /* Mobile */
@@ -778,19 +738,18 @@ function renderMovieLabelPosts(json) {
 </div>
 
 <script>
-  // Mobile-only rotating slots
   const stickyAdSlots = [
-    "8811425590", // original sticky slot
-    "2359999321", // 300x250
-    "4256856469", // responsive
-    "2906167922"  // banner
+    "8811425590",
+    "2359999321",
+    "4256856469",
+    "2906167922"
   ];
 
   let stickyIndex = 0;
+  let stickyInitialized = false;
   const stickyIns = document.getElementById("stickyAdSlot");
 
   function rotateStickyAd() {
-    // Safety: mobile only
     if (window.innerWidth >= 768) return;
 
     stickyIns.style.opacity = "0";
@@ -799,9 +758,11 @@ function renderMovieLabelPosts(json) {
       stickyIns.setAttribute("data-ad-slot", stickyAdSlots[stickyIndex]);
       stickyIns.innerHTML = "";
 
-      (adsbygoogle = window.adsbygoogle || []).push({});
+      try {
+        (adsbygoogle = window.adsbygoogle || []).push({});
+      } catch(e) {}
 
-      stickyIns.style.transition = "opacity 0.8s";
+      stickyIns.style.transition = "opacity .8s";
       stickyIns.style.opacity = "1";
 
       stickyIndex = (stickyIndex + 1) % stickyAdSlots.length;
@@ -809,10 +770,14 @@ function renderMovieLabelPosts(json) {
   }
 
   document.addEventListener("DOMContentLoaded", () => {
-    rotateStickyAd();                 // first load
-    setInterval(rotateStickyAd, 180000); // rotate every 3 minutes (SAFE)
+    if (stickyInitialized) return;
+    stickyInitialized = true;
+
+    rotateStickyAd();
+    setInterval(rotateStickyAd, 180000);
   });
 </script>
+
 
 
 <script>
