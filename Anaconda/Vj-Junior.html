@@ -730,55 +730,59 @@ function renderMovieLabelPosts(json) {
 <div class="sticky-ad" id="stickyRotatingAd">
   <ins id="stickyAdSlot"
        class="adsbygoogle"
-       style="display:block; width:100%;"
+       style="display:block; width:100%; min-height:60px;"
        data-ad-client="ca-pub-2269884583846743"
-       data-ad-slot="8811425590"
+       data-ad-slot="2359999321"
        data-ad-format="auto"
        data-full-width-responsive="true"></ins>
 </div>
 
 <script>
-  const stickyAdSlots = [
-    "8811425590",
-    "2359999321",
-    "4256856469",
-    "2906167922"
-  ];
+/* --------------------------------
+   STICKY MOBILE AD ROTATION
+   (overlay logic adapted)
+--------------------------------- */
 
-  let stickyIndex = 0;
-  let stickyInitialized = false;
-  const stickyIns = document.getElementById("stickyAdSlot");
+const stickyAds = [
+  { slot: "2359999321" }, // 300x250
+  { slot: "1267838847" }, // 200x200
+  { slot: "4256856469" }, // responsive
+  { slot: "2906167922" }  // banner
+];
 
-  function rotateStickyAd() {
-    if (window.innerWidth >= 768) return;
+let stickyIndex = 0;
+let stickyStarted = false;
+const stickyIns = document.getElementById("stickyAdSlot");
 
-    stickyIns.style.opacity = "0";
+function showNextStickyAd() {
+  // Mobile only
+  if (window.innerWidth >= 768) return;
 
-    setTimeout(() => {
-      stickyIns.setAttribute("data-ad-slot", stickyAdSlots[stickyIndex]);
-      stickyIns.innerHTML = "";
+  stickyIns.style.opacity = "0";
 
-      try {
-        (adsbygoogle = window.adsbygoogle || []).push({});
-      } catch(e) {}
+  setTimeout(() => {
+    stickyIns.innerHTML = "";
+    stickyIns.setAttribute("data-ad-slot", stickyAds[stickyIndex].slot);
 
-      stickyIns.style.transition = "opacity .8s";
-      stickyIns.style.opacity = "1";
+    try {
+      (adsbygoogle = window.adsbygoogle || []).push({});
+    } catch (e) {}
 
-      stickyIndex = (stickyIndex + 1) % stickyAdSlots.length;
-    }, 400);
-  }
+    stickyIns.style.transition = "opacity .8s";
+    stickyIns.style.opacity = "1";
 
-  document.addEventListener("DOMContentLoaded", () => {
-    if (stickyInitialized) return;
-    stickyInitialized = true;
+    stickyIndex = (stickyIndex + 1) % stickyAds.length;
+  }, 400);
+}
 
-    rotateStickyAd();
-    setInterval(rotateStickyAd, 180000);
-  });
+document.addEventListener("DOMContentLoaded", () => {
+  if (stickyStarted) return;
+  stickyStarted = true;
+
+  showNextStickyAd();                 // first ad
+  setInterval(showNextStickyAd, 180000); // rotate every 3 minutes
+});
 </script>
-
-
 
 <script>
 document.addEventListener("DOMContentLoaded", function(){
